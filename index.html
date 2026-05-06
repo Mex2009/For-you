@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Happy Birthday مريومتي 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Tajawal:wght@300;400;500;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#ff6b9d;--rose:#ff3d7f;--blush:#ffb3cc;
+  --dark:#160010;--darker:#0e0008;
+  --glass:rgba(255,107,157,0.08);--border:rgba(255,107,157,0.2);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100vh;font-size:16px;overflow:hidden;font-family:'Tajawal',sans-serif;background:var(--dark);color:#fff;}
+
+/* ══ PARTICLES ══ */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.ptcl{position:absolute;border-radius:50%;animation:ptFloat linear infinite;opacity:0;}
+@keyframes ptFloat{0%{transform:translateY(110vh);opacity:0}10%{opacity:.5}90%{opacity:.3}100%{transform:translateY(-10vh);opacity:0}}
+
+/* ══ BG DECORATION ══ */
+#bgDeco{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(100px);}
+.bg-ring{position:absolute;border-radius:50%;border:1px solid rgba(255,107,157,.07);}
+.bg-line{position:absolute;background:linear-gradient(90deg,transparent,rgba(255,107,157,.06),transparent);height:1px;}
+.bg-dot{position:absolute;border-radius:50%;background:rgba(255,179,204,.15);animation:dotPulse 4s ease-in-out infinite alternate;}
+@keyframes dotPulse{0%{transform:scale(1);opacity:.15}100%{transform:scale(1.4);opacity:.06}}
+.bg-star{position:absolute;color:rgba(255,179,204,.18);font-size:14px;animation:starFloat ease-in-out infinite alternate;}
+@keyframes starFloat{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(-16px) rotate(25deg)}}
+
+/* ══ CONFETTI CANNON (login) ══ */
+.cannon-piece{
+  position:fixed;bottom:-20px;
+  width:10px;height:10px;
+  border-radius:2px;
+  pointer-events:none;z-index:9999;
+  animation:cannonShoot linear forwards;
+}
+@keyframes cannonShoot{
+  0%{transform:translateY(0) translateX(0) rotate(0deg);opacity:1;}
+  100%{transform:translateY(var(--cy)) translateX(var(--cx)) rotate(var(--cr));opacity:0;}
+}
+
+/* ══ LOGIN ══ */
+#loginPage{
+  position:fixed;inset:0;z-index:900;
+  background:radial-gradient(ellipse at 50% 60%,#2a0020 0%,#0e0008 70%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .8s,visibility .8s;
+}
+#loginPage.gone{opacity:0;visibility:hidden;pointer-events:none;}
+.lheart{position:absolute;pointer-events:none;animation:lhFloat linear infinite;}
+@keyframes lhFloat{from{transform:translateY(110vh) rotate(0)}to{transform:translateY(-10vh) rotate(20deg)}}
+#loginCake{margin-bottom:2rem;filter:drop-shadow(0 0 40px rgba(255,61,127,.5));animation:cakeBob 2.5s ease-in-out infinite;}
+@keyframes cakeBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.login-title{font-family:'Great Vibes',cursive;font-size:clamp(36px,5vw,56px);background:linear-gradient(135deg,#ffb3cc,#ff3d7f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.3rem;}
+.login-sub{font-size:14px;color:rgba(255,179,204,.45);margin-bottom:2.5rem;letter-spacing:.12em;}
+.pw-wrap{position:relative;margin-bottom:.5rem;}
+.pw-field{background:rgba(255,107,157,.07);border:1.5px solid rgba(255,107,157,.3);border-radius:50px;padding:14px 28px;font-size:22px;color:#fff;text-align:center;letter-spacing:10px;width:clamp(220px,28vw,300px);outline:none;font-family:monospace;transition:border-color .3s,box-shadow .3s;}
+.pw-field:focus{border-color:var(--pink);box-shadow:0 0 30px rgba(255,107,157,.2);}
+.pw-field::placeholder{letter-spacing:3px;font-size:13px;color:rgba(255,179,204,.25);}
+.pw-err{text-align:center;color:#ff6b9d;font-size:12px;margin-top:.5rem;opacity:0;transition:opacity .3s;height:18px;}
+.pw-err.show{opacity:1;}
+.login-btn{margin-top:1.2rem;background:linear-gradient(135deg,#ff3d7f,#ff6b9d);border:none;border-radius:50px;padding:14px 52px;color:#fff;font-size:16px;font-family:'Tajawal',sans-serif;font-weight:600;cursor:pointer;letter-spacing:.05em;box-shadow:0 10px 36px rgba(255,61,127,.35);transition:transform .2s,box-shadow .2s;}
+.login-btn:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(255,61,127,.5);}
+
+/* ══ APP ══ */
+#app{position:fixed;top:0;left:0;width:100vw;height:100vh;display:none;flex-direction:row;}
+#app.show{display:flex;}
+
+/* ══ LEFT PANEL ══ */
+#leftPanel{width:55vw;height:100vh;background:radial-gradient(ellipse at 60% 40%,#220016 0%,#0e0008 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:2rem;gap:clamp(12px,2vh,24px);}
+.lp-blob{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;background:var(--rose);opacity:.1;}
+#cakeSvgWrap{opacity:0;transition:opacity .5s;}
+#cakeSvgWrap.show{opacity:1;}
+.flame{animation:flicker 1.2s ease-in-out infinite alternate;}
+.flame:nth-child(2){animation-delay:.3s;}
+.flame:nth-child(3){animation-delay:.15s;}
+@keyframes flicker{0%{transform:scaleY(1) scaleX(1)}100%{transform:scaleY(1.15) scaleX(.92)}}
+.cake-svg-layer{transform-origin:center bottom;transform:scaleY(0);transition:transform .7s cubic-bezier(.34,1.56,.64,1);}
+.cake-svg-layer.pop{transform:scaleY(1);}
+#hbText{font-family:'Great Vibes',cursive;font-size:clamp(36px,5.5vw,64px);background:linear-gradient(135deg,#ffb3cc,#ff3d7f,#ffb3cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;line-height:1.15;opacity:0;transform:translateY(16px);transition:opacity .8s,transform .8s;filter:drop-shadow(0 0 20px rgba(255,107,157,.3));}
+#hbText.show{opacity:1;transform:translateY(0);}
+.hb-cursor{display:inline-block;width:3px;height:.75em;background:#ff6b9d;vertical-align:middle;margin-right:4px;animation:blink .7s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+#subText{font-family:'Dancing Script',cursive;font-size:clamp(14px,1.8vw,20px);color:rgba(255,179,204,.65);text-align:center;opacity:0;transform:translateY(8px);transition:opacity .7s,transform .7s;}
+#subText.show{opacity:1;transform:translateY(0);}
+.bloom{position:fixed;pointer-events:none;font-size:20px;z-index:50;animation:bloomOut .9s ease-out forwards;}
+@keyframes bloomOut{0%{transform:translate(0,0) scale(1.2);opacity:1}100%{transform:translate(var(--bx),var(--by)) scale(0);opacity:0}}
+
+/* ══ RIGHT PANEL ══ */
+#rightPanel{width:45vw;height:100vh;background:radial-gradient(ellipse at 30% 50%,#1c000f 0%,#0e0008 70%);display:flex;flex-direction:column;position:relative;overflow:hidden;border-right:1px solid rgba(255,107,157,.08);}
+#photoArea{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(1rem,3vh,2rem);gap:clamp(8px,1.5vh,16px);opacity:0;transform:translateX(24px);transition:opacity .9s,transform .9s;}
+#photoArea.show{opacity:1;transform:translateX(0);}
+.balloons{font-size:clamp(22px,3vw,32px);letter-spacing:.3em;animation:ballFloat 3s ease-in-out infinite;}
+@keyframes ballFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.photo-frame{width:clamp(250px,18vw,300px);height:clamp(300px,22vw,500px);border-radius:20px;border:2px solid rgba(255,107,157,.3);background:linear-gradient(145deg,rgba(255,107,157,.15),rgba(255,61,127,.08));display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 20px 60px rgba(255,61,127,.15),0 0 0 1px rgba(255,107,157,.1);position:relative;}
+.photo-frame img{width:100%;height:100%;object-fit:cover;}
+.photo-caption{font-family:'Dancing Script',cursive;font-size:clamp(12px,1.5vw,16px);color:rgba(255,179,204,.7);text-align:center;max-width:clamp(160px,22vw,240px);line-height:1.7;}
+#optGrid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(6px,1vw,12px);padding:clamp(10px,1.5vw,18px);}
+.opt-btn{background:rgba(255,107,157,.07);border:1px solid rgba(255,107,157,.18);border-radius:clamp(12px,1.5vw,18px);padding:clamp(10px,1.5vh,18px) clamp(8px,1vw,12px);color:rgba(255,179,204,.85);font-family:'Tajawal',sans-serif;font-size:clamp(11px,1.2vw,14px);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .25s;text-align:center;}
+.opt-btn:hover{background:rgba(255,107,157,.18);border-color:rgba(255,107,157,.45);transform:translateY(-3px);box-shadow:0 10px 28px rgba(255,61,127,.2);color:#fff;}
+.opt-icon{font-size:clamp(22px,3vw,32px);}
+.opt-label{font-size:clamp(11px,1.1vw,13px);letter-spacing:.03em;}
+
+/* ══ OVERLAY BASE ══ */
+.overlay{position:fixed;inset:0;z-index:800;background:rgba(8,0,6,.92);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s;padding:24px;}
+.overlay.open{opacity:1;visibility:visible;}
+.ov-close{position:absolute;top:20px;right:20px;background:rgba(255,107,157,.12);border:1px solid rgba(255,107,157,.25);border-radius:50%;width:44px;height:44px;color:rgba(255,179,204,.8);font-size:20px;cursor:pointer;transition:all .2s;z-index:10;display:flex;align-items:center;justify-content:center;}
+.ov-close:hover{background:rgba(255,107,157,.3);color:#fff;transform:scale(1.1);}
+.ov-box{background:linear-gradient(145deg,#1e0014,#110009);border:1px solid rgba(255,107,157,.18);border-radius:28px;padding:2.5rem;box-shadow:0 40px 100px rgba(0,0,0,.8),0 0 0 1px rgba(255,107,157,.05);position:relative;width:min(700px,96vw);max-height:92vh;overflow-y:auto;}
+.ov-box::-webkit-scrollbar{width:4px;}
+.ov-box::-webkit-scrollbar-thumb{background:rgba(255,107,157,.35);border-radius:2px;}
+.ov-title{font-family:'Great Vibes',cursive;font-size:clamp(32px,4vw,52px);color:var(--blush);text-align:center;margin-bottom:1.5rem;}
+
+/* ══ TIMELINE ══ */
+#letterOv .ov-box{width:min(680px,96vw);padding:2.5rem 2rem;}
+.tl-header{text-align:center;margin-bottom:2.5rem;}
+.tl-header-title{font-family:'Great Vibes',cursive;font-size:52px;background:linear-gradient(135deg,#ffb3cc,#ff3d7f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;margin-bottom:.5rem;}
+.tl-header-sub{font-family:'Dancing Script',cursive;font-size:17px;color:rgba(255,179,204,.55);letter-spacing:.06em;}
+.tl-track{position:relative;padding:0 0 1rem;}
+.tl-track::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent 0%,rgba(255,107,157,.6) 8%,rgba(255,107,157,.6) 92%,transparent 100%);transform:translateX(-50%);}
+.tl-row{display:flex;align-items:center;margin-bottom:2.5rem;position:relative;opacity:0;transform:translateY(24px);animation:tlRowIn .6s cubic-bezier(.16,1,.3,1) forwards;}
+.tl-row:nth-child(odd){flex-direction:row;}
+.tl-row:nth-child(even){flex-direction:row-reverse;}
+@keyframes tlRowIn{to{opacity:1;transform:translateY(0);}}
+.tl-card{width:calc(50% - 52px);background:linear-gradient(145deg,rgba(255,107,157,.09),rgba(255,61,127,.05));border:1px solid rgba(255,107,157,.2);border-radius:20px;padding:1.4rem 1.6rem;cursor:pointer;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s,border-color .3s;position:relative;overflow:hidden;}
+.tl-card:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 20px 50px rgba(255,61,127,.22);border-color:rgba(255,107,157,.45);}
+.tl-row:nth-child(odd) .tl-card::after{content:'';position:absolute;right:-10px;top:50%;transform:translateY(-50%);border:10px solid transparent;border-left-color:rgba(255,107,157,.2);}
+.tl-row:nth-child(even) .tl-card::after{content:'';position:absolute;left:-10px;top:50%;transform:translateY(-50%);border:10px solid transparent;border-right-color:rgba(255,107,157,.2);}
+.tl-card-date{font-size:11px;color:rgba(255,107,157,.7);letter-spacing:.1em;margin-bottom:.5rem;}
+.tl-card-title{font-family:'Dancing Script',cursive;font-size:20px;color:#ffb3cc;margin-bottom:.5rem;line-height:1.3;}
+.tl-card-preview{font-size:13px;color:rgba(255,179,204,.5);line-height:1.6;direction:rtl;}
+.tl-card-hint{font-size:11px;color:rgba(255,107,157,.45);margin-top:.8rem;letter-spacing:.04em;display:flex;align-items:center;gap:5px;}
+.tl-card-hint::before{content:'👆';font-size:12px;}
+.tl-node{width:72px;height:72px;flex-shrink:0;border-radius:50%;background:linear-gradient(145deg,#ff6b9d,#ff3d7f);border:3px solid rgba(255,179,204,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 0 8px rgba(255,107,157,.1),0 0 24px rgba(255,61,127,.4);position:relative;z-index:2;cursor:pointer;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;}
+.tl-node:hover{transform:scale(1.18) rotate(-5deg);box-shadow:0 0 0 14px rgba(255,107,157,.18),0 0 40px rgba(255,61,127,.65);}
+.tl-node-emoji{font-size:28px;line-height:1;}
+.tl-node-num{font-size:10px;color:rgba(255,255,255,.65);margin-top:3px;letter-spacing:.05em;}
+.tl-row.today .tl-node{width:84px;height:84px;background:linear-gradient(145deg,#ffcce0,#ff3d7f);box-shadow:0 0 0 10px rgba(255,107,157,.18),0 0 40px rgba(255,61,127,.6);animation:nodeGlow 2.2s ease-in-out infinite;}
+.tl-row.today .tl-node-emoji{font-size:34px;}
+@keyframes nodeGlow{0%,100%{box-shadow:0 0 0 10px rgba(255,107,157,.18),0 0 30px rgba(255,61,127,.5);}50%{box-shadow:0 0 0 18px rgba(255,107,157,.28),0 0 55px rgba(255,61,127,.8);}}
+.tl-spacer{width:calc(50% - 52px);}
+.tl-sparkle{position:absolute;pointer-events:none;font-size:14px;opacity:.3;animation:sparkleFloat 4s ease-in-out infinite alternate;}
+@keyframes sparkleFloat{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(-12px) rotate(20deg)}}
+
+/* ══ MESSAGE MODAL ══ */
+.msg-modal-overlay{position:fixed;inset:0;z-index:1200;background:rgba(8,0,6,.94);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s;}
+.msg-modal-overlay.open{opacity:1;visibility:visible;}
+.msg-modal{background:linear-gradient(145deg,#1e0014,#110009);border:1px solid rgba(255,107,157,.22);border-radius:28px;padding:3rem;width:min(520px,90vw);max-height:88vh;overflow-y:auto;position:relative;box-shadow:0 40px 100px rgba(0,0,0,.8);text-align:center;animation:modalPop .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes modalPop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.msg-modal::-webkit-scrollbar{width:4px;}
+.msg-modal::-webkit-scrollbar-thumb{background:rgba(255,107,157,.3);border-radius:2px;}
+.msg-modal-close{position:absolute;top:18px;right:18px;background:rgba(255,107,157,.12);border:1px solid rgba(255,107,157,.22);border-radius:50%;width:40px;height:40px;color:rgba(255,179,204,.8);font-size:18px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.msg-modal-close:hover{background:rgba(255,107,157,.28);color:#fff;}
+.msg-modal-date{font-size:13px;color:rgba(255,107,157,.65);letter-spacing:.1em;margin-bottom:.6rem;}
+.msg-modal-title{font-family:'Great Vibes',cursive;font-size:40px;background:linear-gradient(135deg,#ffb3cc,#ff3d7f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:1.4rem;line-height:1.25;}
+.msg-modal-body{font-family:'Dancing Script',cursive;font-size:20px;color:#c77fa0;line-height:2.1;direction:rtl;text-align:center;}
+.msg-modal-emoji{font-size:40px;margin-top:1.4rem;letter-spacing:.25em;}
+
+/* ══ CARD OVERLAY ══ */
+#cardOv .ov-box{width:min(500px,92vw);}
+.card-scene{perspective:1600px;width:100%;max-width:380px;margin:0 auto;}
+.card-wrap{width:100%;padding-bottom:145%;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.4,0,.2,1);}
+.card-wrap.flipped{transform:rotateY(-180deg);}
+.card-face{position:absolute;inset:0;border-radius:24px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 2rem;}
+.card-front{background:linear-gradient(145deg,#ff6b9d,#ff3d7f,#c0396b);box-shadow:0 30px 80px rgba(255,61,127,.4);}
+.card-front-inner{text-align:center;color:#fff;}
+.cfi-emoji{font-size:72px;margin-bottom:1rem;}
+.cfi-title{font-family:'Great Vibes',cursive;font-size:48px;margin-bottom:.5rem;}
+.cfi-sub{font-size:16px;opacity:.85;letter-spacing:.08em;}
+.card-back{background:linear-gradient(145deg,#fff5f8,#ffe0ec);transform:rotateY(180deg);box-shadow:0 30px 80px rgba(255,61,127,.25);}
+.card-back-msg{font-family:'Dancing Script',cursive;font-size:20px;color:#7a1040;line-height:2.1;text-align:center;direction:rtl;}
+.card-hint{text-align:center;font-size:13px;color:rgba(255,179,204,.4);margin-top:1rem;letter-spacing:.06em;}
+
+/* ══ SONGS — NEW DESIGN ══ */
+#songsOv .ov-box{width:min(640px,94vw);}
+.songs-list{display:flex;flex-direction:column;gap:1.4rem;}
+
+.song-card{
+  position:relative;border-radius:24px;overflow:hidden;
+  cursor:default;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s;
+}
+.song-card:hover{transform:translateY(-5px);box-shadow:0 24px 60px rgba(255,61,127,.25);}
+
+/* vinyl record background */
+.song-bg{
+  position:absolute;inset:0;z-index:0;
+  background:linear-gradient(145deg,#1a0010,#0e0008);
+  overflow:hidden;
+}
+.song-bg-vinyl{
+  position:absolute;right:-40px;top:50%;transform:translateY(-50%);
+  width:160px;height:160px;border-radius:50%;
+  background:conic-gradient(
+    #1a0010 0deg,#2a0018 40deg,#1a0010 80deg,#2a0018 120deg,
+    #1a0010 160deg,#2a0018 200deg,#1a0010 240deg,#2a0018 280deg,
+    #1a0010 320deg,#2a0018 360deg
+  );
+  border:2px solid rgba(255,107,157,.15);
+  box-shadow:0 0 40px rgba(255,61,127,.1);
+  animation:vinylSpin 8s linear infinite;
+  animation-play-state:paused;
+  opacity:.7;
+}
+.song-card:hover .song-bg-vinyl{animation-play-state:running;}
+.song-bg-vinyl::before{
+  content:'';position:absolute;inset:30%;border-radius:50%;
+  background:radial-gradient(circle,#ff6b9d 0%,#ff3d7f 40%,#1a0010 60%);
+  box-shadow:0 0 20px rgba(255,107,157,.5);
+}
+.song-bg-vinyl::after{
+  content:'';position:absolute;inset:46%;border-radius:50%;
+  background:#fff0f5;
+  box-shadow:0 0 10px rgba(255,107,157,.8);
+}
+@keyframes vinylSpin{to{transform:translateY(-50%) rotate(360deg);}}
+
+/* sound waves decoration */
+.song-bg-waves{
+  position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:60%;opacity:.04;
+  display:flex;align-items:center;gap:3px;padding-right:20px;
+  justify-content:flex-end;
+}
+.song-bg-wave{
+  width:3px;border-radius:3px;
+  background:var(--blush);
+  animation:waveDance .8s ease-in-out infinite alternate;
+}
+
+/* content */
+.song-inner{position:relative;z-index:1;padding:1.6rem 1.8rem;}
+.sc-vibe-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,107,157,.15);border:1px solid rgba(255,107,157,.25);
+  border-radius:20px;padding:4px 12px;
+  font-size:12px;color:rgba(255,179,204,.7);
+  letter-spacing:.06em;margin-bottom:.9rem;
+}
+.sc-main{display:flex;align-items:center;gap:1.2rem;}
+.sc-disc-wrap{position:relative;flex-shrink:0;}
+.sc-disc{
+  width:58px;height:58px;border-radius:50%;
+  background:conic-gradient(#ff6b9d 0deg,#ff3d7f 90deg,#c0396b 180deg,#ff6b9d 360deg);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 22px rgba(255,61,127,.5);
+  animation:discSpin 5s linear infinite;animation-play-state:paused;
+  position:relative;z-index:1;
+}
+.song-card:hover .sc-disc{animation-play-state:running;}
+.sc-disc::after{
+  content:'';position:absolute;inset:36%;border-radius:50%;
+  background:#0e0008;border:2px solid rgba(255,107,157,.4);
+}
+@keyframes discSpin{to{transform:rotate(360deg)}}
+.sc-disc-needle{
+  position:absolute;top:-8px;right:-12px;
+  width:24px;height:30px;z-index:2;
+  transform-origin:top right;
+  transition:transform .6s cubic-bezier(.34,1.56,.64,1);
+}
+.song-card:hover .sc-disc-needle{transform:rotate(-18deg);}
+.sc-disc-needle svg{width:100%;height:100%;}
+
+.sc-info{flex:1;min-width:0;}
+.sc-moment{font-family:'Dancing Script',cursive;font-size:21px;color:#ffb3cc;line-height:1.3;margin-bottom:.3rem;}
+.sc-song-name{font-size:15px;color:rgba(255,255,255,.75);font-weight:500;margin-bottom:.2rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sc-song-vibe{font-size:12px;color:rgba(255,179,204,.45);}
+
+/* waves equalizer (animated) */
+.sc-eq{
+  display:flex;align-items:flex-end;gap:2px;height:22px;
+  margin-top:.8rem;
+  opacity:.6;
+}
+.sc-eq-bar{
+  width:4px;border-radius:2px;
+  background:linear-gradient(to top,#ff3d7f,#ffb3cc);
+  animation:eqDance ease-in-out infinite alternate;
+}
+@keyframes eqDance{0%{transform:scaleY(.2)}100%{transform:scaleY(1)}}
+
+.sc-audio-wrap{
+  margin-top:1rem;position:relative;
+}
+.sc-audio-wrap audio{
+  width:100%;height:38px;border-radius:20px;
+  accent-color:#ff6b9d;
+  background:rgba(255,107,157,.08);
+  outline:none;
+}
+
+/* divider between cards */
+.song-sep{
+  display:flex;align-items:center;gap:10px;
+  color:rgba(255,107,157,.3);font-size:12px;
+}
+.song-sep::before,.song-sep::after{content:'';flex:1;height:1px;background:rgba(255,107,157,.12);}
+
+/* ══ GAMES ══ */
+#gamesOv .ov-box{width:min(640px,94vw);}
+.games-list{display:flex;flex-direction:column;gap:1.5rem;}
+.game-card{background:rgba(255,107,157,.06);border:1px solid rgba(255,107,157,.15);border-radius:20px;padding:1.8rem 2rem;text-align:center;}
+.game-title{font-family:'Dancing Script',cursive;font-size:26px;color:#ffb3cc;margin-bottom:.3rem;}
+.game-sub{font-size:14px;color:rgba(255,179,204,.45);margin-bottom:1.2rem;letter-spacing:.04em;}
+.hcv{position:relative;width:100%;height:260px;border:1px solid rgba(255,107,157,.12);border-radius:16px;overflow:hidden;background:rgba(7,0,5,.4);}
+.gcatcher{width:76px;height:42px;background:linear-gradient(135deg,#ff6b9d,#ff3d7f);border-radius:12px;position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 22px rgba(255,61,127,.55);user-select:none;}
+.fheart{position:absolute;font-size:26px;pointer-events:none;}
+.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:340px;margin:0 auto;}
+.mcd{aspect-ratio:1;border-radius:14px;background:linear-gradient(145deg,rgba(255,107,157,.3),rgba(255,61,127,.2));border:1px solid rgba(255,107,157,.2);display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;transition:transform .18s,box-shadow .18s;}
+.mcd:hover{transform:scale(1.1);box-shadow:0 8px 24px rgba(255,61,127,.35);}
+.mcd.fd .face{display:none;}
+.mcd.fd::after{content:'💜';font-size:22px;}
+.mcd.mt2{background:linear-gradient(145deg,rgba(5,80,46,.5),rgba(4,100,60,.3));border-color:rgba(52,211,153,.2);cursor:default;}
+.qq{font-family:'Dancing Script',cursive;font-size:20px;color:#fdf4ff;margin-bottom:1.2rem;line-height:1.7;min-height:56px;}
+.qop{display:flex;flex-direction:column;gap:10px;margin-bottom:.8rem;}
+.qo{background:rgba(255,107,157,.07);border:1px solid rgba(255,107,157,.16);border-radius:14px;padding:14px 20px;color:rgba(255,179,204,.9);font-size:16px;font-family:'Tajawal',sans-serif;cursor:pointer;text-align:right;transition:all .2s;}
+.qo:hover:not(:disabled){background:rgba(255,107,157,.22);border-color:rgba(255,107,157,.45);color:#fff;}
+.qo.ok{background:rgba(5,80,46,.4);border-color:rgba(52,211,153,.4);color:#6ee7b7;cursor:default;}
+.qo.no{background:rgba(100,0,0,.3);border-color:rgba(248,113,113,.3);color:#fca5a5;cursor:default;}
+.qo:disabled{cursor:default;}
+.qf{font-size:15px;min-height:20px;color:#ffb3cc;margin-bottom:.4rem;}
+.qpg{display:flex;gap:7px;justify-content:center;margin-bottom:1rem;}
+.qd{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.15);transition:background .3s;}
+.qd.dn{background:#ff6b9d;}
+.qd.cu{background:#ff3d7f;box-shadow:0 0 8px rgba(255,61,127,.6);}
+.srow{display:flex;gap:1rem;justify-content:center;margin-bottom:1rem;flex-wrap:wrap;}
+.sbox{background:rgba(255,107,157,.07);border:1px solid rgba(255,107,157,.15);border-radius:12px;padding:.8rem 1.4rem;text-align:center;}
+.sval{font-size:26px;font-weight:700;color:#ffb3cc;}
+.slbl{font-size:12px;color:rgba(255,179,204,.5);margin-top:2px;}
+.abtn{background:rgba(255,107,157,.14);border:1px solid rgba(255,107,157,.28);border-radius:14px;padding:12px 28px;color:#ffb3cc;font-size:15px;font-family:'Tajawal',sans-serif;cursor:pointer;transition:all .2s;margin:.3rem;}
+.abtn:hover{background:rgba(255,107,157,.32);border-color:rgba(255,107,157,.55);color:#fff;box-shadow:0 8px 22px rgba(255,61,127,.25);}
+.abtn:disabled{opacity:.3;cursor:default;}
+.gmsg{font-size:14px;color:rgba(255,179,204,.6);margin-top:.7rem;min-height:18px;}
+
+/* confetti */
+.cf{position:fixed;pointer-events:none;z-index:999;animation:cffall linear forwards;}
+@keyframes cffall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+
+<!-- BG DECO -->
+<div id="bgDeco"></div>
+<div id="particles"></div>
+
+<!-- LOGIN -->
+<div id="loginPage">
+  <div class="lheart" style="left:8%;font-size:18px;animation-duration:9s">💗</div>
+  <div class="lheart" style="left:22%;font-size:14px;animation-duration:12s;animation-delay:2s">🌸</div>
+  <div class="lheart" style="left:55%;font-size:22px;animation-duration:8s;animation-delay:1s">💖</div>
+  <div class="lheart" style="left:75%;font-size:16px;animation-duration:11s;animation-delay:3s">🎀</div>
+  <div class="lheart" style="left:40%;font-size:20px;animation-duration:10s;animation-delay:1.5s">💜</div>
+  <svg id="loginCake" width="120" height="140" viewBox="0 0 120 140">
+    <ellipse cx="60" cy="128" rx="52" ry="8" fill="#ff3d7f" opacity=".3"/>
+    <rect x="10" y="95" width="100" height="32" rx="10" fill="url(#lg1)"/>
+    <rect x="22" y="65" width="76" height="32" rx="9" fill="url(#lg2)"/>
+    <rect x="36" y="38" width="48" height="29" rx="8" fill="url(#lg3)"/>
+    <path d="M10,95 Q18,89 26,95 Q34,89 42,95 Q50,89 58,95 Q66,89 74,95 Q82,89 90,95 Q98,89 110,95" fill="none" stroke="#ffb3cc" stroke-width="3" opacity=".6"/>
+    <path d="M22,65 Q30,59 38,65 Q46,59 54,65 Q62,59 70,65 Q78,59 86,65 Q94,59 98,65" fill="none" stroke="#ffc2d4" stroke-width="2.5" opacity=".6"/>
+    <path d="M36,38 Q42,32 48,38 Q54,32 60,38 Q66,32 72,38 Q78,32 84,38" fill="none" stroke="#ffcdd7" stroke-width="2" opacity=".6"/>
+    <rect x="44" y="18" width="6" height="20" rx="3" fill="#fff5f8" opacity=".9"/>
+    <rect x="57" y="14" width="6" height="24" rx="3" fill="#ffe0ec" opacity=".9"/>
+    <rect x="70" y="18" width="6" height="20" rx="3" fill="#fff5f8" opacity=".9"/>
+    <g class="flame"><ellipse cx="47" cy="16" rx="3.5" ry="5" fill="#ffcc00" opacity=".9"/><ellipse cx="47" cy="15" rx="2" ry="3" fill="#ff9900"/></g>
+    <g class="flame"><ellipse cx="60" cy="12" rx="3.5" ry="5" fill="#ffcc00" opacity=".9"/><ellipse cx="60" cy="11" rx="2" ry="3" fill="#ff9900"/></g>
+    <g class="flame"><ellipse cx="73" cy="16" rx="3.5" ry="5" fill="#ffcc00" opacity=".9"/><ellipse cx="73" cy="15" rx="2" ry="3" fill="#ff9900"/></g>
+    <circle cx="35" cy="80" r="4" fill="#ff6b9d" opacity=".7"/>
+    <circle cx="85" cy="80" r="4" fill="#ff6b9d" opacity=".7"/>
+    <text x="60" y="114" text-anchor="middle" font-size="9" fill="#fff" opacity=".7" font-family="Tajawal">Happy Birthday</text>
+    <defs>
+      <linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff6b9d"/><stop offset="100%" stop-color="#ff3d7f"/></linearGradient>
+      <linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff8fba"/><stop offset="100%" stop-color="#ff6b9d"/></linearGradient>
+      <linearGradient id="lg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffb3cc"/><stop offset="100%" stop-color="#ff8fba"/></linearGradient>
+    </defs>
+  </svg>
+  <div class="login-title">Happy Birthday</div>
+  <div class="login-sub">✨ هذا الموقع خاص جداً ✨</div>
+  <div class="pw-wrap">
+    <input class="pw-field" id="pw" type="password" placeholder="••••••••" maxlength="7"/>
+  </div>
+  <div class="pw-err" id="err">كلمة السر غلط، فكري كويس 💭</div>
+  <button class="login-btn" onclick="checkPw()">دخولي 🌸</button>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div id="leftPanel">
+    <div class="lp-blob" style="width:50%;height:50%;top:-10%;right:-10%;"></div>
+    <div class="lp-blob" style="width:40%;height:40%;bottom:-10%;left:-10%;background:#ff6b9d;"></div>
+    <div id="cakeSvgWrap">
+      <svg id="mainCake" width="0" height="0" viewBox="0 0 200 230" style="transition:width .5s,height .5s;">
+        <ellipse cx="100" cy="218" rx="88" ry="11" fill="#ff3d7f" opacity=".2"/>
+        <g class="cake-svg-layer" id="csl1">
+          <rect x="8" y="158" width="184" height="56" rx="16" fill="url(#ml1)"/>
+          <path d="M8,158 Q22,148 36,158 Q50,148 64,158 Q78,148 92,158 Q106,148 120,158 Q134,148 148,158 Q162,148 176,158 Q190,148 192,158" fill="none" stroke="#ffcdd7" stroke-width="4" opacity=".7" stroke-linecap="round"/>
+          <circle cx="40" cy="178" r="6" fill="#ff3d7f" opacity=".5"/>
+          <circle cx="160" cy="178" r="6" fill="#ff3d7f" opacity=".5"/>
+          <text x="100" y="195" text-anchor="middle" font-size="11" fill="#fff" opacity=".65" font-family="Tajawal,sans-serif">Happy Birthday</text>
+        </g>
+        <g class="cake-svg-layer" id="csl2">
+          <rect x="28" y="106" width="144" height="54" rx="14" fill="url(#ml2)"/>
+          <path d="M28,106 Q40,97 52,106 Q64,97 76,106 Q88,97 100,106 Q112,97 124,106 Q136,97 148,106 Q160,97 172,106" fill="none" stroke="#ffc2d4" stroke-width="3.5" opacity=".7" stroke-linecap="round"/>
+          <circle cx="60" cy="126" r="5" fill="#ff6b9d" opacity=".6"/>
+          <circle cx="140" cy="126" r="5" fill="#ff6b9d" opacity=".6"/>
+          <text x="100" y="140" text-anchor="middle" font-size="10" fill="#fff" opacity=".55" font-family="Tajawal,sans-serif">💜 مريومتي 💜</text>
+        </g>
+        <g class="cake-svg-layer" id="csl3">
+          <rect x="52" y="60" width="96" height="48" rx="12" fill="url(#ml3)"/>
+          <path d="M52,60 Q62,52 72,60 Q82,52 92,60 Q102,52 112,60 Q122,52 132,60 Q142,52 148,60" fill="none" stroke="#ffb3cc" stroke-width="3" opacity=".6" stroke-linecap="round"/>
+          <circle cx="76" cy="78" r="4" fill="#ff8fba" opacity=".7"/>
+          <circle cx="124" cy="78" r="4" fill="#ff8fba" opacity=".7"/>
+        </g>
+        <g class="cake-svg-layer" id="csl4">
+          <rect x="74" y="32" width="8" height="28" rx="4" fill="#fff5f8" opacity=".9"/>
+          <rect x="96" y="26" width="8" height="34" rx="4" fill="#ffe0ec" opacity=".9"/>
+          <rect x="118" y="32" width="8" height="28" rx="4" fill="#fff5f8" opacity=".9"/>
+          <g class="flame"><ellipse cx="78" cy="28" rx="5" ry="7" fill="#ffdd00" opacity=".95"/><ellipse cx="78" cy="27" rx="3" ry="4.5" fill="#ffa500"/><ellipse cx="78" cy="26" rx="1.5" ry="2.5" fill="#fff" opacity=".6"/></g>
+          <g class="flame"><ellipse cx="100" cy="22" rx="5.5" ry="8" fill="#ffdd00" opacity=".95"/><ellipse cx="100" cy="21" rx="3" ry="5" fill="#ffa500"/><ellipse cx="100" cy="19" rx="1.5" ry="2.5" fill="#fff" opacity=".6"/></g>
+          <g class="flame"><ellipse cx="122" cy="28" rx="5" ry="7" fill="#ffdd00" opacity=".95"/><ellipse cx="122" cy="27" rx="3" ry="4.5" fill="#ffa500"/><ellipse cx="122" cy="26" rx="1.5" ry="2.5" fill="#fff" opacity=".6"/></g>
+        </g>
+        <defs>
+          <linearGradient id="ml1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff6b9d"/><stop offset="100%" stop-color="#e0356a"/></linearGradient>
+          <linearGradient id="ml2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff8fba"/><stop offset="100%" stop-color="#ff6b9d"/></linearGradient>
+          <linearGradient id="ml3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffb3cc"/><stop offset="100%" stop-color="#ff8fba"/></linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div id="hbText"><span id="hbTyped"></span><span class="hb-cursor" id="hbCur"></span></div>
+    <div id="subText">يا أجمل حاجة في حياتي 💜</div>
+  </div>
+
+  <div id="rightPanel">
+    <div id="photoArea">
+      <div class="balloons">🎈🎀🎈🎀🎈</div>
+      <div class="photo-frame" id="photoFrame">
+        <img src="e19bbe6a7b4ae755f9f871d02e7065a8.png" onerror="this.style.display='none';document.getElementById('phEmoji').style.display='flex';" alt="مريومتي"/>
+        <div id="phEmoji" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:60px;">🌸</div>
+      </div>
+      <div class="photo-caption">يا أجمل إنسانة في الدنيا 💜<br>كل سنة وأنتِ طيبة يا مريومتي</div>
+    </div>
+    <div id="optGrid">
+      <button class="opt-btn" onclick="openOv('letterOv')"><span class="opt-icon">💌</span><span class="opt-label">رسائل من القلب</span></button>
+      <button class="opt-btn" onclick="openOv('cardOv')"><span class="opt-icon">🎴</span><span class="opt-label">الكارت</span></button>
+      <button class="opt-btn" onclick="openOv('songsOv')"><span class="opt-icon">🎵</span><span class="opt-label">المواقف والأغاني</span></button>
+      <button class="opt-btn" onclick="openOv('gamesOv')"><span class="opt-icon">🎮</span><span class="opt-label">الألعاب</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- OV 1: TIMELINE -->
+<div class="overlay" id="letterOv">
+  <button class="ov-close" onclick="closeOv('letterOv')">✕</button>
+  <div class="ov-box">
+    <div class="tl-header">
+      <div class="tl-header-title">رحلتنا 🌸</div>
+      <div class="tl-header-sub">من أول لحظة لحد انهارده ✨</div>
+    </div>
+    <div class="tl-track" id="tlTrack"></div>
+  </div>
+</div>
+
+<!-- MESSAGE MODAL -->
+<div class="msg-modal-overlay" id="msgModalOverlay" onclick="closeMsgModal()">
+  <div class="msg-modal" onclick="event.stopPropagation()">
+    <button class="msg-modal-close" onclick="closeMsgModal()">✕</button>
+    <div class="msg-modal-date" id="msgModalDate"></div>
+    <div class="msg-modal-title" id="msgModalTitle"></div>
+    <div class="msg-modal-body" id="msgModalBody"></div>
+    <div class="msg-modal-emoji" id="msgModalEmoji"></div>
+  </div>
+</div>
+
+<!-- OV 2: CARD -->
+<div class="overlay" id="cardOv">
+  <button class="ov-close" onclick="closeOv('cardOv')">✕</button>
+  <div class="ov-box">
+    <div class="card-scene">
+      <div class="card-wrap" id="cardWrap" onclick="this.classList.toggle('flipped')">
+        <div class="card-face card-front">
+          <div class="card-front-inner">
+            <div class="cfi-emoji">🎂</div>
+            <div class="cfi-title">Happy Birthday</div>
+            <div class="cfi-sub">يا مريومتي 🌸</div>
+          </div>
+        </div>
+        <div class="card-face card-back">
+          <div class="card-back-msg"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-hint">اضغطي على الكارت لتفتحيه 💌</div>
+  </div>
+</div>
+
+<!-- OV 3: SONGS -->
+<div class="overlay" id="songsOv">
+  <button class="ov-close" onclick="closeOv('songsOv')">✕</button>
+  <div class="ov-box">
+    <div class="ov-title">🎵 كل موقف وأغنيته</div>
+    <div class="songs-list" id="songsList"></div>
+  </div>
+</div>
+
+<!-- OV 4: GAMES -->
+<div class="overlay" id="gamesOv">
+  <button class="ov-close" onclick="closeOv('gamesOv')">✕</button>
+  <div class="ov-box">
+    <div class="ov-title">ألعاب ليكِ 🎮</div>
+    <div class="games-list">
+      <div class="game-card">
+        <div class="game-title">💜 اصطادي القلوب</div>
+        <div class="game-sub">حركي مريومة يمين وشمال!</div>
+        <div class="srow">
+          <div class="sbox"><div class="sval" id="g1sc">0</div><div class="slbl">مسكتيها</div></div>
+          <div class="sbox"><div class="sval" id="g1ms">0</div><div class="slbl">فاتت</div></div>
+          <div class="sbox"><div class="sval" id="g1tm">30</div><div class="slbl">ثانية</div></div>
+        </div>
+        <div class="hcv" id="g1cv"><div class="gcatcher" id="g1ct">🌸</div></div>
+        <div class="gmsg" id="g1mg">اضغطي ابدأ ❤️</div>
+        <button class="abtn" id="g1sb" onclick="startG1()">▶️ ابدأ</button>
+      </div>
+      <div class="game-card">
+        <div class="game-title">🌸 لعبة الذاكرة</div>
+        <div class="game-sub">لقّي كل زوجين متشابهين!</div>
+        <div class="srow">
+          <div class="sbox"><div class="sval" id="g2mv">0</div><div class="slbl">حركة</div></div>
+          <div class="sbox"><div class="sval" id="g2pr">0</div><div class="slbl">أزواج</div></div>
+        </div>
+        <div class="mg" id="memG"></div>
+        <div class="gmsg" id="g2mg">اضغطي على أي كارت!</div>
+        <button class="abtn" onclick="initMem()">🔄 إعادة</button>
+      </div>
+      <div class="game-card">
+        <div class="game-title">❓ اعرفيني كويس</div>
+        <div class="game-sub">أسئلة عنّي، هتعدّي؟ 😏</div>
+        <div class="qpg" id="qpg"></div>
+        <div class="qq" id="qq"></div>
+        <div class="qop" id="qop"></div>
+        <div class="qf" id="qf"></div>
+        <button class="abtn" id="qnxt" style="display:none" onclick="nextQ()">التالي ←</button>
+        <button class="abtn" id="qrst" style="display:none" onclick="initQuiz()">🔄 من الأول</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════
+   ✏️ CONFIG — غير هنا بس
+══════════════════════════════════════ */
+const NOTES=['أنتِ أجمل إنسانة عرفتها في حياتي 🌸','ضحكتك بتنور يومي كله 💜','كل سنة وأنتِ أحلى وأحلى 🎂','مش بتخيل حياتي من غيرك 💗','أنتِ الجزء الأحلى من كل يوم ✨'];
+
+const QUESTIONS=[
+  {q:'إيه اللون المفضل عندي؟',opts:['الأزرق','البنفسجي','الأخضر','الاسود'],ans:3},
+  {q:'لو قضيت يوم كامل معاكِ، هنعمل إيه؟',opts:['نتفرج على فيلم','نطلع بره','ناكل شاورماااا','نلعب ألعاب'],ans:2},
+  {q:'إيه أكتر حاجة بحبها فيكِ؟',opts:['ضحكتك','طيبتك','عيونك','جميع ما سبق 💜'],ans:3},
+  {q:'السؤال الأهم: بتحبيني؟',opts:['لا "خخخخخ"','نص ونص "احا؟" ','مش متاكده "عند امك" ',' اكييييد "ايوة كده اظبطي"'],ans:3},
+];
+
+const CHECKPOINTS=[
+  {date:'البداية 🌱',label:'أول مسدج',emoji:'🌸',title:'أول مسدج',body:'أنا فاكر أول يوم عرفتك فيه،\nحاجة جوّايا قالت إن الحياة هتبقى مختلفة.\nتخيلي بس بنت بتسمع راب \n يا بختيييي. 💜',extra:'💌 ✨ 🌸'},
+  {date:'في النص 💫',label:'احلي بلوك ده ولا ايه',emoji:'💜',title:'احلي بلوك ده ولا ايه',body:'اليوم ده كان عبثي اوي بجد،\nلسه بقولك ليه قلتي هدلت \nملحقتش ارد لقيتني اتبلكت يا حيوانة. ',extra:''},
+  {date:'وسط الرحلة 🎯',label:'ريبوست مثير للشك',emoji:'🎀',title:'ريبوست مثير للشك',body:'من لحظتها اتاكدت ان كل حاجة بينا مشتركة\nحسيت الي هو اخيرا حد شبهي في تصرفاتي\nده الي هو انتي يا قلبوظة. 🎀',extra:'🎀 🌈 💕'},
+  {date:'قريب من هنا 🌙',label:'اعترفت اخيرا',emoji:'⭐',title:'كول 6 ساعات؟',body:'حسيت اني بكلم نفسي بس الجنس الاخر\nحسيت اني لازم اخد الخطوة واكون جريء.،\nقلتي بتكرهي الارتباط صحيح بس لو معترفتش مكناش هنبقي هنا. \n يوم 7/4/2026',extra:'⭐ 🌙 ✨'},
+  {date:'انهارده 🎂',label:'عيد ميلادك',emoji:'🎉',title:'Happy Birthday يا مريومتي 🎂',body:'انهارده يوم خاص جداً —\nيوم ما كانتش الدنيا ده من غيرك والي روحي اتولدت فيه من جديد.\nكل سنة وأنتِ أجمل وأسعد وأحلى. 💜🎂',extra:'🎉 🎂 💜 🌸 ✨'},
+];
+
+/* ✏️ الأغاني — غير الاسم والموقف وملف الأغنية */
+const SONGS=[
+  {icon:'🌅',moment:'٦ الصبح وكبايتين شاي',name:'يا جمالك يا ست',vibe:'الأغنية اللي بتحس إنها الدنيا',src:'original sound - 1l2_o_musicaldown.com_1778028078.mp3'},
+  {icon:'🌍',moment:'الجنان كله مع الأغنية الي بتحبيها',name:'عاوزك وقلبي اختار',vibe:'الأغنية اللي بتعيش اللحظة دي',src:'original sound - dembly.design_musicaldown.com_1778028426.mp3'},
+  {icon:'💜',moment:'وأنا بحبك',name:'اتاكدت خلاص',vibe:'الأغنية اللي بتقول كل اللي جوّاكِ',src:'original sound - kabos09870_musicaldown.com_1778030849.mp3'},
+];
+/* ══════════════════════════════════════ */
+
+/* ══ BG DECO ══ */
+(()=>{
+  const d=document.getElementById('bgDeco');
+  // orbs
+  [{w:500,h:500,bg:'#ff3d7f',op:.07,t:'-15%',r:'-10%'},{w:400,h:400,bg:'#7c3aed',op:.05,t:'30%',l:'-8%'},{w:350,h:350,bg:'#ff6b9d',op:.06,b:'-10%',r:'15%'},{w:250,h:250,bg:'#ff3d7f',op:.06,t:'10%',l:'30%'}].forEach(o=>{
+    const el=document.createElement('div');el.className='bg-orb';
+    el.style.cssText=`width:${o.w}px;height:${o.h}px;background:${o.bg};opacity:${o.op};${o.t?'top:'+o.t+';':''}${o.b?'bottom:'+o.b+';':''}${o.l?'left:'+o.l+';':''}${o.r?'right:'+o.r+';':''}`;
+    d.appendChild(el);
+  });
+  // rings
+  for(let i=0;i<5;i++){
+    const el=document.createElement('div');el.className='bg-ring';
+    const s=120+i*90;
+    el.style.cssText=`width:${s}px;height:${s}px;top:${10+i*16}%;left:${5+i*20}%;opacity:${.04+i*.01};`;
+    d.appendChild(el);
+  }
+  // diagonal lines
+  for(let i=0;i<6;i++){
+    const el=document.createElement('div');el.className='bg-line';
+    el.style.cssText=`width:100%;top:${8+i*16}%;transform:rotate(-${2+i}deg);opacity:${.5+i*.1};`;
+    d.appendChild(el);
+  }
+  // dots
+  for(let i=0;i<18;i++){
+    const el=document.createElement('div');el.className='bg-dot';
+    const s=3+Math.random()*6;
+    el.style.cssText=`width:${s}px;height:${s}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*4}s;animation-duration:${3+Math.random()*3}s;`;
+    d.appendChild(el);
+  }
+  // stars
+  '✦✧✦✧✦✧✦✧✦✧'.split('').forEach((s,i)=>{
+    const el=document.createElement('span');el.className='bg-star';el.textContent=s;
+    el.style.cssText=`top:${Math.random()*90}%;left:${Math.random()*95}%;animation-duration:${3+Math.random()*4}s;animation-delay:${Math.random()*3}s;`;
+    d.appendChild(el);
+  });
+})();
+
+/* ══ PARTICLES ══ */
+(()=>{
+  const p=document.getElementById('particles');
+  const cols=['#ff6b9d','#ff3d7f','#ffb3cc','#ff8fba'];
+  for(let i=0;i<20;i++){
+    const d=document.createElement('div');d.className='ptcl';
+    const s=Math.random()*5+3;
+    d.style.cssText=`width:${s}px;height:${s}px;background:${cols[i%4]};left:${Math.random()*100}%;animation-duration:${9+Math.random()*10}s;animation-delay:${Math.random()*9}s`;
+    p.appendChild(d);
+  }
+})();
+
+/* ══ CONFETTI CANNON ══ */
+function shootCannon(){
+  const cols=['#ff6b9d','#ffb3cc','#ff3d7f','#fff','#ffc2d4','#ffdd00','#ff8fba','#c084fc','#60a5fa','#34d399'];
+  const shapes=['50%','2px','0'];
+  const total=120;
+  for(let i=0;i<total;i++){
+    const el=document.createElement('div');
+    el.className='cannon-piece';
+    // spread from 3 points: left, center, right
+    const origin=[15,50,85][i%3];
+    const col=cols[Math.floor(Math.random()*cols.length)];
+    const shape=shapes[Math.floor(Math.random()*shapes.length)];
+    const w=6+Math.random()*8;const h=w*(Math.random()>.5?1:2.5);
+    const cx=(Math.random()*160-80)+'vw';
+    const cy=-(60+Math.random()*60)+'vh';
+    const cr=(Math.random()*720-360)+'deg';
+    const dur=0.9+Math.random()*0.8;
+    el.style.cssText=`
+      left:${origin}%;
+      width:${w}px;height:${h}px;
+      background:${col};border-radius:${shape};
+      --cx:${cx};--cy:${cy};--cr:${cr};
+      animation-duration:${dur}s;
+      animation-delay:${i*0.008}s;
+    `;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),(dur+i*0.008+0.1)*1000);
+  }
+}
+
+/* ══ LOGIN ══ */
+document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')checkPw();});
+function checkPw(){
+  if(document.getElementById('pw').value.trim()==='1152010'){
+    shootCannon();
+    setTimeout(()=>{
+      document.getElementById('loginPage').classList.add('gone');
+      document.getElementById('app').classList.add('show');
+      startAnim();
+    },600);
+  } else {
+    const e=document.getElementById('err');
+    e.classList.add('show');
+    setTimeout(()=>e.classList.remove('show'),1800);
+    const f=document.getElementById('pw');
+    f.style.borderColor='rgba(255,61,127,.6)';
+    setTimeout(()=>f.style.borderColor='',1200);
+  }
+}
+
+/* ══ MAIN ANIM ══ */
+function startAnim(){
+  const svg=document.getElementById('mainCake');
+  document.getElementById('cakeSvgWrap').classList.add('show');
+  const vw=document.getElementById('leftPanel').offsetWidth;
+  const s=Math.min(vw*.65,260);
+  svg.style.width=s+'px';svg.style.height=(s*1.15)+'px';
+  ['csl1','csl2','csl3','csl4'].forEach((id,i)=>{setTimeout(()=>document.getElementById(id).classList.add('pop'),300+i*400);});
+  setTimeout(()=>spawnBloom(),2000);
+  setTimeout(()=>{document.getElementById('hbText').classList.add('show');typeText('Happy Birthday\nمريومتي 🌸',0);},2400);
+  setTimeout(()=>document.getElementById('subText').classList.add('show'),4600);
+  setTimeout(()=>document.getElementById('photoArea').classList.add('show'),3000);
+  setTimeout(()=>{initMem();initQuiz();buildSongs();},800);
+}
+
+function typeText(txt,i){
+  if(i>txt.length){document.getElementById('hbCur').style.display='none';return;}
+  document.getElementById('hbTyped').innerHTML=txt.slice(0,i).replace('\n','<br>');
+  setTimeout(()=>typeText(txt,i+1),txt[i]==='\n'?200:70);
+}
+
+function spawnBloom(){
+  const lp=document.getElementById('leftPanel').getBoundingClientRect();
+  const cx=lp.left+lp.width*.4,cy=lp.top+lp.height*.45;
+  ['🌸','💖','✨','🎊','🎀','💗','⭐','🌺','🎉'].forEach((e,i)=>{
+    const b=document.createElement('div');b.className='bloom';b.textContent=e;
+    const a=(i/9)*Math.PI*2,dist=80+Math.random()*70;
+    b.style.cssText=`position:fixed;left:${cx}px;top:${cy}px;z-index:50;font-size:20px;animation-delay:${i*.06}s;`;
+    b.style.setProperty('--bx',Math.cos(a)*dist+'px');b.style.setProperty('--by',Math.sin(a)*dist+'px');
+    document.body.appendChild(b);setTimeout(()=>b.remove(),1000);
+  });
+}
+
+/* ══ OVERLAYS ══ */
+function openOv(id){document.getElementById(id).classList.add('open');}
+function closeOv(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.overlay').forEach(o=>{o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');});});
+
+/* ══ SONGS BUILD ══ */
+function buildSongs(){
+  const list=document.getElementById('songsList');
+  const eqHeights=[30,60,45,80,55,70,40,65,50,75,35,60];
+  SONGS.forEach((s,i)=>{
+    if(i>0){
+      const sep=document.createElement('div');sep.className='song-sep';sep.textContent='✦';
+      list.appendChild(sep);
+    }
+    const card=document.createElement('div');card.className='song-card';
+    // waves html
+    const wavesHtml=eqHeights.map((h,wi)=>`<div class="song-bg-wave" style="height:${h}%"></div>`).join('');
+    // eq bars
+    const eqHtml=eqHeights.slice(0,8).map((h,wi)=>`<div class="sc-eq-bar" style="height:${h}%;animation-duration:${.4+wi*.08}s;animation-delay:${wi*.06}s;"></div>`).join('');
+    card.innerHTML=`
+      <div class="song-bg">
+        <div class="song-bg-vinyl"></div>
+        <div class="song-bg-waves">${wavesHtml}</div>
+      </div>
+      <div class="song-inner">
+        <div class="sc-vibe-tag">${s.icon} ${s.moment}</div>
+        <div class="sc-main">
+          <div class="sc-disc-wrap">
+            <div class="sc-disc"></div>
+            <div class="sc-disc-needle">
+              <svg viewBox="0 0 24 30" fill="none">
+                <line x1="20" y1="2" x2="4" y2="26" stroke="#ffb3cc" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="4" cy="26" r="3" fill="#ff6b9d"/>
+              </svg>
+            </div>
+          </div>
+          <div class="sc-info">
+            <div class="sc-moment">${s.name}</div>
+            <div class="sc-song-name">${s.moment}</div>
+            <div class="sc-song-vibe">${s.vibe}</div>
+            <div class="sc-eq">${eqHtml}</div>
+          </div>
+        </div>
+        <div class="sc-audio-wrap">
+          <audio controls src="${s.src}" style="width:100%;height:38px;border-radius:20px;accent-color:#ff6b9d;"></audio>
+        </div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+/* ══ TIMELINE ══ */
+function buildTimeline(){
+  const track=document.getElementById('tlTrack');
+  if(!track||track.dataset.built)return;
+  track.dataset.built='1';track.innerHTML='';
+  ['✦','✧','✦','✧','✦'].forEach((s,i)=>{
+    const sp=document.createElement('span');sp.className='tl-sparkle';sp.textContent=s;
+    sp.style.cssText=`left:${8+i*20}%;top:${10+i*18}%;animation-delay:${i*.7}s`;
+    track.appendChild(sp);
+  });
+  CHECKPOINTS.forEach((cp,i)=>{
+    const isToday=i===CHECKPOINTS.length-1;
+    const row=document.createElement('div');row.className='tl-row'+(isToday?' today':'');row.style.animationDelay=(i*.15)+'s';
+    const card=document.createElement('div');card.className='tl-card';
+    card.innerHTML=`<div class="tl-card-date">${cp.date}</div><div class="tl-card-title">${cp.title}</div><div class="tl-card-preview">${cp.body.split('\n')[0].slice(0,55)}…</div><div class="tl-card-hint">اضغطي لتقري أكتر</div>`;
+    card.addEventListener('click',()=>openMsgModal(i));
+    const node=document.createElement('div');node.className='tl-node';
+    node.innerHTML=`<div class="tl-node-emoji">${cp.emoji}</div><div class="tl-node-num">✦${i+1}✦</div>`;
+    node.addEventListener('click',()=>openMsgModal(i));
+    const spacer=document.createElement('div');spacer.className='tl-spacer';
+    if(i%2===0){row.appendChild(card);row.appendChild(node);row.appendChild(spacer);}
+    else{row.appendChild(spacer);row.appendChild(node);row.appendChild(card);}
+    track.appendChild(row);
+  });
+}
+function openMsgModal(i){
+  const cp=CHECKPOINTS[i];
+  document.getElementById('msgModalDate').textContent=cp.date;
+  document.getElementById('msgModalTitle').textContent=cp.title;
+  document.getElementById('msgModalBody').innerHTML=cp.body.replace(/\n/g,'<br>');
+  document.getElementById('msgModalEmoji').textContent=cp.extra;
+  document.getElementById('msgModalOverlay').classList.add('open');
+  if(i===CHECKPOINTS.length-1)setTimeout(confetti,300);
+}
+function closeMsgModal(){document.getElementById('msgModalOverlay').classList.remove('open');}
+document.querySelector('[onclick="openOv(\'letterOv\')"]').addEventListener('click',()=>{setTimeout(buildTimeline,80);});
+
+/* ══ GAME 1 ══ */
+let g1={sc:0,ms:0,tm:30,run:false,hts:[],cx:0,its:[]};
+const G1W=64,hEm=['💜','💗','💕','❤️','💖','🩷','🌸'];
+function startG1(){
+  const cv=document.getElementById('g1cv'),vw=cv.offsetWidth;
+  g1={sc:0,ms:0,tm:30,run:true,hts:[],cx:vw/2-G1W/2,its:[]};
+  ['g1sc','g1ms'].forEach(id=>document.getElementById(id).textContent=0);
+  document.getElementById('g1tm').textContent=30;document.getElementById('g1mg').textContent='حركي مريومة! 👆';
+  document.getElementById('g1sb').disabled=true;cv.querySelectorAll('.fheart').forEach(h=>h.remove());
+  document.getElementById('g1ct').style.cssText=`left:${g1.cx}px;transform:none;`;
+  g1.its.push(setInterval(()=>{
+    if(!g1.run)return;const c=document.getElementById('g1cv'),w=c.offsetWidth;
+    const h=document.createElement('div');h.className='fheart';
+    const x=Math.random()*(w-26),dur=2+Math.random()*1.5;
+    h.textContent=hEm[Math.floor(Math.random()*hEm.length)];
+    h.style.cssText=`position:absolute;left:${x}px;top:-28px;pointer-events:none`;
+    c.appendChild(h);g1.hts.push({el:h,x,y:-28,sp:130/dur,dn:false});
+  },980));
+  g1.its.push(setInterval(()=>{
+    if(!g1.run)return;const VH=document.getElementById('g1cv').offsetHeight,CY=VH-48;
+    g1.hts.forEach(h=>{
+      if(h.dn)return;h.y+=h.sp*.05;h.el.style.top=h.y+'px';
+      if(h.y>=CY&&h.y<=CY+36&&h.x+18>=g1.cx&&h.x<=g1.cx+G1W){h.dn=true;g1.sc++;document.getElementById('g1sc').textContent=g1.sc;h.el.style.opacity='0';setTimeout(()=>h.el.remove(),200);}
+      if(h.y>VH&&!h.dn){h.dn=true;g1.ms++;document.getElementById('g1ms').textContent=g1.ms;h.el.remove();}
+    });g1.hts=g1.hts.filter(h=>!h.dn);
+  },50));
+  g1.its.push(setInterval(()=>{
+    g1.tm--;document.getElementById('g1tm').textContent=g1.tm;
+    if(g1.tm<=0){g1.run=false;g1.its.forEach(clearInterval);document.getElementById('g1sb').disabled=false;document.getElementById('g1cv').querySelectorAll('.fheart').forEach(h=>h.remove());document.getElementById('g1mg').textContent=g1.sc>=15?'🎉 '+g1.sc+' قلب! بطلة!':g1.sc>=8?'💜 '+g1.sc+' قلوب 🌸':'💕 '+g1.sc+' قلوب!';if(g1.sc>=8)confetti();}
+  },1000));
+}
+const g1cv=document.getElementById('g1cv');
+let g1t=false,g1sx=0,g1scx=0;
+g1cv.addEventListener('touchstart',e=>{g1t=true;g1sx=e.touches[0].clientX;g1scx=g1.cx;},{passive:true});
+g1cv.addEventListener('touchmove',e=>{if(!g1t||!g1.run)return;g1.cx=Math.max(0,Math.min(g1cv.offsetWidth-G1W,g1scx+(e.touches[0].clientX-g1sx)));document.getElementById('g1ct').style.left=g1.cx+'px';},{passive:true});
+g1cv.addEventListener('touchend',()=>g1t=false);
+g1cv.addEventListener('mousemove',e=>{if(!g1.run)return;const r=g1cv.getBoundingClientRect();g1.cx=Math.max(0,Math.min(g1cv.offsetWidth-G1W,e.clientX-r.left-G1W/2));document.getElementById('g1ct').style.left=g1.cx+'px';});
+document.addEventListener('keydown',e=>{if(!g1.run)return;if(e.key==='ArrowLeft'||e.key==='a')g1.cx=Math.max(0,g1.cx-22);if(e.key==='ArrowRight'||e.key==='d')g1.cx=Math.min(g1cv.offsetWidth-G1W,g1.cx+22);document.getElementById('g1ct').style.left=g1.cx+'px';});
+
+/* ══ GAME 2 ══ */
+const mEms=['💜','🌸','✨','🎂','🌙','💫','🦋','🌺'];
+let mCards=[],mFlip=[],mMtch=0,mMov=0,mLck=false;
+function initMem(){
+  const g=document.getElementById('memG');g.innerHTML='';mFlip=[];mMtch=0;mMov=0;mLck=false;
+  document.getElementById('g2mv').textContent=0;document.getElementById('g2pr').textContent=0;document.getElementById('g2mg').textContent='اضغطي على أي كارت!';
+  mCards=[...mEms,...mEms].sort(()=>Math.random()-.5).map((em,i)=>{
+    const c=document.createElement('div');c.className='mcd fd';c.dataset.e=em;c.innerHTML=`<span class="face">${em}</span>`;
+    c.addEventListener('click',()=>flipC(c,i));g.appendChild(c);return c;
+  });
+}
+function flipC(card,idx){
+  if(mLck||card.classList.contains('mt2')||mFlip.includes(idx))return;
+  card.classList.remove('fd');mFlip.push(idx);
+  if(mFlip.length===2){
+    mMov++;document.getElementById('g2mv').textContent=mMov;mLck=true;
+    const[a,b]=mFlip.map(i=>mCards[i]);
+    if(a.dataset.e===b.dataset.e){a.classList.add('mt2');b.classList.add('mt2');mMtch++;document.getElementById('g2pr').textContent=mMtch;mFlip=[];mLck=false;if(mMtch===mEms.length){document.getElementById('g2mg').textContent='🎉 عملتيها! بطلة!';confetti();}}
+    else{setTimeout(()=>{a.classList.add('fd');b.classList.add('fd');mFlip=[];mLck=false;},900);}
+  }
+}
+
+/* ══ GAME 3 ══ */
+let qIdx=0,qScore=0;
+function initQuiz(){qIdx=0;qScore=0;document.getElementById('qrst').style.display='none';document.getElementById('qnxt').style.display='none';document.getElementById('qf').textContent='';buildQPg();renderQ();}
+function buildQPg(){const pg=document.getElementById('qpg');pg.innerHTML='';QUESTIONS.forEach((_,i)=>{const d=document.createElement('div');d.className='qd';d.id='qd'+i;pg.appendChild(d);});updQD();}
+function updQD(){QUESTIONS.forEach((_,i)=>{const d=document.getElementById('qd'+i);if(d)d.className='qd'+(i<qIdx?' dn':i===qIdx?' cu':'');});}
+function renderQ(){
+  if(qIdx>=QUESTIONS.length){showQRes();return;}
+  const q=QUESTIONS[qIdx];document.getElementById('qq').textContent=q.q;document.getElementById('qf').textContent='';document.getElementById('qnxt').style.display='none';
+  const op=document.getElementById('qop');op.innerHTML='';
+  q.opts.forEach((o,i)=>{const btn=document.createElement('button');btn.className='qo';btn.textContent=o;btn.addEventListener('click',()=>ansQ(i,btn));op.appendChild(btn);});updQD();
+}
+function ansQ(ch,btn){const q=QUESTIONS[qIdx];document.querySelectorAll('.qo').forEach(b=>b.disabled=true);if(ch===q.ans){btn.classList.add('ok');qScore++;document.getElementById('qf').textContent='صح! 🎉';}else{btn.classList.add('no');document.querySelectorAll('.qo')[q.ans].classList.add('ok');document.getElementById('qf').textContent='غلط 😅 الإجابة الصحيحة اتلونت!';}document.getElementById('qnxt').style.display='inline-block';}
+function nextQ(){qIdx++;document.getElementById('qnxt').style.display='none';if(qIdx>=QUESTIONS.length)showQRes();else renderQ();}
+function showQRes(){document.getElementById('qq').textContent='خلصنا! 🎊';document.getElementById('qop').innerHTML='';document.getElementById('qf').textContent=qScore===QUESTIONS.length?`${qScore}/${QUESTIONS.length} بتعرفيني كويس 💜`:qScore>=2?`${qScore}/${QUESTIONS.length} مش بطال! 😄`:`${qScore}/${QUESTIONS.length} لازم تتعرفي عليّا أكتر 😅`;document.getElementById('qrst').style.display='inline-block';if(qScore>=QUESTIONS.length-1)confetti();updQD();}
+
+/* ══ CONFETTI ══ */
+function confetti(){
+  const cols=['#ff6b9d','#ffb3cc','#ff3d7f','#ffc2d4','#fff','#ff8fba'];
+  for(let i=0;i<70;i++){
+    const c=document.createElement('div');c.className='cf';const s=Math.random()*10+5;
+    c.style.cssText=`width:${s}px;height:${s}px;border-radius:${Math.random()>.5?'50%':'2px'};background:${cols[i%cols.length]};left:${Math.random()*100}%;animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*1.5}s`;
+    document.body.appendChild(c);
+  }
+  setTimeout(()=>document.querySelectorAll('.cf').forEach(c=>c.remove()),6000);
+}
+</script>
+</body>
+</html>
