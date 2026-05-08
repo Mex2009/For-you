@@ -339,32 +339,188 @@ html,body{width:100%;height:100vh;font-size:16px;overflow:hidden;font-family:'Ta
 /* confetti */
 .cf{position:fixed;pointer-events:none;z-index:999;animation:cffall linear forwards;}
 @keyframes cffall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
-@media only screen and (max-width: 600px) {
-    /* الحاوية الكبيرة اللي شايلة الـ sections */
-    .app-container { 
-        display: block !important; /* بيلغي الـ flex اللي بيحطهم جنب بعض */
-        overflow-y: scroll !important;
-        height: 100vh !important;
-    }
 
-    .left-section, .right-section {
-        width: 100% !important; /* بياخد العرض الكامل للموبايل */
-        height: auto !important;
-        min-height: 50vh;
-        position: relative !important;
-        top: 0 !important;
-    }
+/* ══ WISH SCREEN ══ */
+#wishScreen{
+  position:fixed;inset:0;z-index:950;
+  background:radial-gradient(ellipse at 50% 60%,#2a0020 0%,#0e0008 70%);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .8s;
+  overflow:hidden;
+}
+#wishScreen.show{display:flex;}
+#wishScreen.visible{opacity:1;}
+#wishScreen.gone{opacity:0;pointer-events:none;}
 
-    .right-section {
-        border-right: none !important;
-        border-bottom: 2px solid rgba(255,255,255,0.1); /* فاصل بسيط */
-    }
+#wishContent{
+  display:flex;flex-direction:column;align-items:center;
+  gap:clamp(10px,2vh,22px);
+  width:100%;padding:1rem;
+}
 
-    /* تصغير حجم صورة مريم والكيكة عشان يكفوا */
-    .profile-img, .cake {
-        max-width: 80% !important;
-        margin: 0 auto;
-    }
+#bigCakeWrap{
+  filter:drop-shadow(0 0 50px rgba(255,61,127,.55));
+  animation:cakeBob 2.5s ease-in-out infinite;
+}
+#bigCakeSvg{
+  width:clamp(220px,35vw,320px);
+  height:auto;
+}
+
+.wflame{
+  transform-box:fill-box;
+  transform-origin:center bottom;
+  animation:wFlicker 1.4s ease-in-out infinite;
+}
+.wflame:nth-child(2){animation-delay:.38s;animation-duration:1.65s;}
+.wflame:nth-child(3){animation-delay:.72s;animation-duration:1.25s;}
+@keyframes wFlicker{
+  0%  {transform:scaleY(1)    scaleX(1)    translateY(0);}
+  30% {transform:scaleY(1.12) scaleX(.91)  translateY(-1px);}
+  55% {transform:scaleY(.96)  scaleX(1.04) translateY(0.5px);}
+  75% {transform:scaleY(1.08) scaleX(.94)  translateY(-0.5px);}
+  100%{transform:scaleY(1)    scaleX(1)    translateY(0);}
+}
+@keyframes glowPulse{
+  0%,100%{opacity:.5;transform:scale(1);}
+  40%    {opacity:.75;transform:scale(1.18);}
+  70%    {opacity:.45;transform:scale(.95);}
+}
+
+#makeAWishTitle{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(36px,5vw,58px);
+  background:linear-gradient(135deg,#ffb3cc,#ff3d7f,#ffb3cc);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  text-align:center;
+  filter:drop-shadow(0 0 18px rgba(255,107,157,.4));
+  opacity:0;transform:translateY(16px);
+  transition:opacity .7s,transform .7s;
+}
+#makeAWishTitle.show{opacity:1;transform:translateY(0);}
+
+#wishInputWrap{
+  display:flex;flex-direction:column;align-items:center;
+  gap:14px;
+  width:min(420px,88vw);
+  opacity:0;transform:translateY(16px);
+  transition:opacity .7s,transform .7s;
+}
+#wishInputWrap.show{opacity:1;transform:translateY(0);}
+
+#wishInput{
+  width:100%;
+  background:rgba(255,107,157,.07);
+  border:1.5px solid rgba(255,107,157,.3);
+  border-radius:20px;
+  padding:16px 20px;
+  font-size:clamp(14px,1.8vw,17px);
+  font-family:'Tajawal',sans-serif;
+  color:#fff;
+  resize:none;
+  height:clamp(90px,14vh,130px);
+  outline:none;
+  direction:rtl;
+  text-align:right;
+  transition:border-color .3s,box-shadow .3s;
+  line-height:1.7;
+}
+#wishInput:focus{
+  border-color:var(--pink);
+  box-shadow:0 0 30px rgba(255,107,157,.2);
+}
+#wishInput::placeholder{color:rgba(255,179,204,.3);font-size:14px;}
+
+#wishSendBtn{
+  background:linear-gradient(135deg,#ff3d7f,#ff6b9d);
+  border:none;border-radius:50px;
+  padding:14px 52px;
+  color:#fff;font-size:16px;
+  font-family:'Tajawal',sans-serif;font-weight:600;
+  cursor:pointer;letter-spacing:.06em;
+  box-shadow:0 10px 36px rgba(255,61,127,.4);
+  transition:transform .2s,box-shadow .2s;
+}
+#wishSendBtn:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(255,61,127,.6);}
+#wishSendBtn:active{transform:scale(.97);}
+#wishSendBtn:disabled{opacity:.5;cursor:default;transform:none;}
+
+/* smoke puff after blow */
+.smoke-puff{
+  position:absolute;
+  pointer-events:none;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(200,200,200,.5) 0%,transparent 70%);
+  animation:smokeFade 1.2s ease-out forwards;
+}
+@keyframes smokeFade{
+  0%{transform:scale(.2) translateY(0);opacity:.7}
+  100%{transform:scale(2.5) translateY(-30px);opacity:0}
+}
+
+/* blackout */
+#blackout{
+  position:fixed;inset:0;z-index:960;
+  background:#000;
+  opacity:0;pointer-events:none;
+  transition:opacity 1.5s ease;
+}
+#blackout.dark{opacity:1;pointer-events:all;}
+#blackout.fade-out{opacity:0;}
+/* ══ WISH POEM ══ */
+#wishPoem{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  opacity:0;pointer-events:none;
+  transition:opacity .6s ease;
+  text-align:center;
+}
+#wishPoem.show{opacity:1;}
+
+.poem-line{
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(16px,2.2vw,22px);
+  color:rgba(255,179,204,.0);
+  letter-spacing:.04em;
+  line-height:1.8;
+  animation:none;
+}
+.poem-line.reveal{
+  animation:poemReveal .9s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes poemReveal{
+  0%  {color:rgba(255,179,204,0);  transform:translateY(10px);}
+  100%{color:rgba(255,179,204,.85);transform:translateY(0);}
+}
+/* ══ MUSIC BUTTON ══ */
+#musicBtn{
+  position:fixed;
+  bottom:22px;
+  left:22px;
+  z-index:9999;
+  width:48px;height:48px;
+  border-radius:50%;
+  background:rgba(255,107,157,.12);
+  border:1.5px solid rgba(255,107,157,.3);
+  color:#ffb3cc;
+  font-size:20px;
+  cursor:pointer;
+  display:none;
+  align-items:center;justify-content:center;
+  backdrop-filter:blur(10px);
+  box-shadow:0 4px 20px rgba(255,61,127,.2);
+  transition:background .25s, transform .2s, box-shadow .2s;
+  animation:musicBtnIn .5s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+#musicBtn:hover{
+  background:rgba(255,107,157,.28);
+  transform:scale(1.12);
+  box-shadow:0 8px 28px rgba(255,61,127,.4);
+}
+#musicBtn.playing span{ display:inline-block; animation:spin 3s linear infinite; }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+@keyframes musicBtnIn{
+  from{opacity:0;transform:scale(.5) translateY(10px);}
+  to{opacity:1;transform:scale(1) translateY(0);}
 }
 </style>
 </head>
@@ -412,6 +568,104 @@ html,body{width:100%;height:100vh;font-size:16px;overflow:hidden;font-family:'Ta
   <div class="pw-err" id="err">كلمة السر غلط، فكري كويس 💭</div>
   <button class="login-btn" onclick="checkPw()">دخولي 🌸</button>
 </div>
+
+<!-- WISH SCREEN -->
+<div id="wishScreen">
+  <!-- floating hearts bg -->
+  <div class="lheart" style="left:5%;font-size:20px;animation-duration:10s">💗</div>
+  <div class="lheart" style="left:88%;font-size:15px;animation-duration:13s;animation-delay:1.5s">🌸</div>
+  <div class="lheart" style="left:15%;font-size:14px;animation-duration:11s;animation-delay:3s">💖</div>
+  <div class="lheart" style="left:72%;font-size:18px;animation-duration:9s;animation-delay:.8s">💜</div>
+  <div class="lheart" style="left:42%;font-size:12px;animation-duration:14s;animation-delay:2s">🎀</div>
+
+  <div id="wishContent">
+    <!-- Big Cake SVG -->
+    <div id="bigCakeWrap">
+      <svg id="bigCakeSvg" viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="wlg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff6b9d"/><stop offset="100%" stop-color="#ff3d7f"/></linearGradient>
+          <linearGradient id="wlg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff8fba"/><stop offset="100%" stop-color="#ff6b9d"/></linearGradient>
+          <linearGradient id="wlg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffb3cc"/><stop offset="100%" stop-color="#ff8fba"/></linearGradient>
+          <radialGradient id="candleGlow1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffdd00" stop-opacity=".9"/><stop offset="100%" stop-color="#ffdd00" stop-opacity="0"/></radialGradient>
+          <radialGradient id="candleGlow2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffdd00" stop-opacity=".9"/><stop offset="100%" stop-color="#ffdd00" stop-opacity="0"/></radialGradient>
+          <radialGradient id="candleGlow3" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffdd00" stop-opacity=".9"/><stop offset="100%" stop-color="#ffdd00" stop-opacity="0"/></radialGradient>
+          <filter id="glowF"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- shadow -->
+        <ellipse cx="140" cy="308" rx="100" ry="10" fill="#ff3d7f" opacity=".2"/>
+        <!-- tier 1 - bottom -->
+        <rect x="14" y="220" width="252" height="72" rx="18" fill="url(#wlg1)"/>
+        <path d="M14,220 Q28,208 42,220 Q56,208 70,220 Q84,208 98,220 Q112,208 126,220 Q140,208 154,220 Q168,208 182,220 Q196,208 210,220 Q224,208 238,220 Q252,208 266,220" fill="none" stroke="#ffcdd7" stroke-width="4.5" opacity=".7" stroke-linecap="round"/>
+        <circle cx="55" cy="248" r="7" fill="#fff" opacity=".25"/>
+        <circle cx="225" cy="248" r="7" fill="#fff" opacity=".25"/>
+        <circle cx="140" cy="270" r="5" fill="#fff" opacity=".2"/>
+        <!-- tier 2 - middle -->
+        <rect x="36" y="152" width="208" height="68" rx="16" fill="url(#wlg2)"/>
+        <path d="M36,152 Q50,142 64,152 Q78,142 92,152 Q106,142 120,152 Q134,142 148,152 Q162,142 176,152 Q190,142 204,152 Q218,142 244,152" fill="none" stroke="#ffcdd7" stroke-width="3.5" opacity=".65" stroke-linecap="round"/>
+        <circle cx="80" cy="178" r="6" fill="#fff" opacity=".22"/>
+        <circle cx="200" cy="178" r="6" fill="#fff" opacity=".22"/>
+        <!-- tier 3 - top -->
+        <rect x="68" y="92" width="144" height="60" rx="14" fill="url(#wlg3)"/>
+        <path d="M68,92 Q80,82 92,92 Q104,82 116,92 Q128,82 140,92 Q152,82 164,92 Q176,82 188,92 Q200,82 212,92" fill="none" stroke="#ffe0ec" stroke-width="3" opacity=".6" stroke-linecap="round"/>
+        <!-- candles -->
+        <rect x="100" y="58" width="12" height="36" rx="5" fill="#fff5f8" opacity=".95"/>
+        <rect x="134" y="50" width="12" height="44" rx="5" fill="#ffe0ec" opacity=".95"/>
+        <rect x="168" y="58" width="12" height="36" rx="5" fill="#fff5f8" opacity=".95"/>
+        <!-- candle glow halos -->
+        <ellipse id="wg1" cx="106" cy="54" rx="20" ry="20" fill="url(#candleGlow1)" style="animation:glowPulse 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center;"/>
+        <ellipse id="wg2" cx="140" cy="46" rx="22" ry="22" fill="url(#candleGlow2)" style="animation:glowPulse 1.65s ease-in-out infinite .38s;transform-box:fill-box;transform-origin:center;"/>
+        <ellipse id="wg3" cx="174" cy="54" rx="20" ry="20" fill="url(#candleGlow3)" style="animation:glowPulse 1.25s ease-in-out infinite .72s;transform-box:fill-box;transform-origin:center;"/>
+        <!-- flames -->
+        <g class="wflame" id="wfl1" filter="url(#glowF)">
+          <ellipse cx="106" cy="52" rx="5" ry="7" fill="#ffcc00" opacity=".95"/>
+          <ellipse cx="106" cy="50" rx="3" ry="4.5" fill="#ff9900"/>
+          <ellipse cx="106" cy="48" rx="1.5" ry="2.5" fill="#fff" opacity=".8"/>
+        </g>
+        <g class="wflame" id="wfl2" filter="url(#glowF)">
+          <ellipse cx="140" cy="44" rx="6" ry="8" fill="#ffcc00" opacity=".95"/>
+          <ellipse cx="140" cy="42" rx="3.5" ry="5" fill="#ff9900"/>
+          <ellipse cx="140" cy="40" rx="2" ry="3" fill="#fff" opacity=".8"/>
+        </g>
+        <g class="wflame" id="wfl3" filter="url(#glowF)">
+          <ellipse cx="174" cy="52" rx="5" ry="7" fill="#ffcc00" opacity=".95"/>
+          <ellipse cx="174" cy="50" rx="3" ry="4.5" fill="#ff9900"/>
+          <ellipse cx="174" cy="48" rx="1.5" ry="2.5" fill="#fff" opacity=".8"/>
+        </g>
+        <!-- sprinkles -->
+        <circle cx="110" cy="110" r="3" fill="#fff" opacity=".4"/>
+        <circle cx="155" cy="118" r="2.5" fill="#ffdd00" opacity=".5"/>
+        <circle cx="185" cy="108" r="3" fill="#fff" opacity=".35"/>
+        <circle cx="90" cy="115" r="2" fill="#ffdd00" opacity=".4"/>
+        <circle cx="170" cy="170" r="3.5" fill="#fff" opacity=".3"/>
+        <circle cx="110" cy="178" r="2.5" fill="#ffb3cc" opacity=".4"/>
+        <circle cx="220" cy="240" r="4" fill="#fff" opacity=".25"/>
+        <circle cx="60" cy="245" r="3" fill="#ffdd00" opacity=".35"/>
+      </svg>
+    </div>
+
+    <!-- Make a Wish text -->
+    <div id="makeAWishTitle">Make a Wish ✨</div>
+
+    <!-- Wish input area -->
+    <div id="wishInputWrap">
+      <textarea id="wishInput" placeholder="اكتبي أمنيتك هنا... 💭" maxlength="300"></textarea>
+      <button id="wishSendBtn" onclick="sendWish()">
+        <span id="wishBtnText">Send 🌠</span>
+      </button>
+    </div>
+
+    <!-- Poem shown after send -->
+    <div id="wishPoem">
+      <div class="poem-line" style="animation-delay:.0s">نفّخي.. وخلّي الأمنية تطير 🕯️</div>
+      <div class="poem-line" style="animation-delay:.45s">زي الشمعة.. لما تتحرر من النار</div>
+      <div class="poem-line" style="animation-delay:.9s">أمنيتك وصلت.. والكون سمع 🌙</div>
+      <div class="poem-line" style="animation-delay:1.35s">وربنا يكتبها في أجمل المقدّر ✨</div>
+    </div>
+  </div>
+</div>
+
+<!-- BLACKOUT OVERLAY -->
+<div id="blackout"></div>
 
 <!-- APP -->
 <div id="app">
@@ -690,8 +944,7 @@ function checkPw(){
     shootCannon();
     setTimeout(()=>{
       document.getElementById('loginPage').classList.add('gone');
-      document.getElementById('app').classList.add('show');
-      startAnim();
+      showWishScreen();
     },600);
   } else {
     const e=document.getElementById('err');
@@ -702,6 +955,108 @@ function checkPw(){
     setTimeout(()=>f.style.borderColor='',1200);
   }
 }
+
+/* ══ WISH SCREEN ══ */
+function showWishScreen(){
+  const ws=document.getElementById('wishScreen');
+  ws.classList.add('show');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>ws.classList.add('visible')));
+  // reveal title & input with delay
+  setTimeout(()=>document.getElementById('makeAWishTitle').classList.add('show'),600);
+  setTimeout(()=>document.getElementById('wishInputWrap').classList.add('show'),1100);
+}
+
+function sendWish(){
+  const input=document.getElementById('wishInput').value.trim();
+  if(!input)return;
+  const btn=document.getElementById('wishSendBtn');
+  btn.disabled=true;
+
+  // 1. hide input → show poem, lines appear one by one
+  document.getElementById('wishInputWrap').style.transition='opacity .5s';
+  document.getElementById('wishInputWrap').style.opacity='0';
+  setTimeout(()=>{
+    document.getElementById('wishInputWrap').style.display='none';
+    const poem=document.getElementById('wishPoem');
+    poem.classList.add('show');
+    poem.querySelectorAll('.poem-line').forEach((line,i)=>{
+      setTimeout(()=>line.classList.add('reveal'), i*600);
+    });
+  },500);
+
+  // 2. after ALL lines have appeared → start the dimming + candles together
+  //    4 lines × 600ms + 500ms initial delay + 900ms last line duration = ~3800ms
+  const poemDone = 500 + 4*600 + 900; // ≈ 3800ms
+  setTimeout(()=>startBlackout(), poemDone);
+}
+
+function startBlackout(){
+  // start slow blackout — 3s to go fully dark
+  const bo=document.getElementById('blackout');
+  bo.style.transition='opacity 3s ease';
+  bo.style.opacity='1';
+  bo.style.pointerEvents='all';
+
+  // candles blow out spread evenly across the 3s dimming window
+  // first at 20%, second at 55%, third at 85% of the 3s
+  setTimeout(()=>blowCandle('wfl1','wg1'),  600);   // 0.6s in
+  setTimeout(()=>blowCandle('wfl2','wg2'), 1600);   // 1.6s in
+  setTimeout(()=>blowCandle('wfl3','wg3'), 2600);   // 2.6s in
+
+  // wish screen fades away mid-blackout
+  setTimeout(()=>document.getElementById('wishScreen').classList.add('gone'), 1200);
+
+  // at full black → start song + reveal app underneath
+  setTimeout(()=>{
+    const hbdAudio=document.getElementById('hbdAudio');
+    if(hbdAudio){
+      hbdAudio.volume=0.75;
+      hbdAudio.play().catch(()=>{});
+      // show music button
+      const mb=document.getElementById('musicBtn');
+      mb.style.display='flex';
+      mb.classList.add('playing');
+    }
+    document.getElementById('app').classList.add('show');
+    startAnim();
+    // fade out blackout slowly to reveal site
+    setTimeout(()=>{
+      bo.style.transition='opacity 2.5s ease';
+      bo.style.opacity='0';
+      setTimeout(()=>bo.style.pointerEvents='none',2600);
+    },800);
+  },3200);
+}
+
+function blowCandle(flameId,glowId){
+  const fl=document.getElementById(flameId);
+  const gw=document.getElementById(glowId);
+  if(fl){
+    // flame flickers then dies — 0.8s transition
+    fl.style.transition='transform .8s cubic-bezier(.4,0,1,1), opacity .8s ease-out';
+    fl.style.transform='scaleY(0) scaleX(0)';
+    fl.style.opacity='0';
+    spawnSmoke(fl);
+  }
+  if(gw){
+    gw.style.transition='opacity 1s ease';
+    gw.style.opacity='0';
+  }
+}
+
+function spawnSmoke(flameEl){
+  const wrap=document.getElementById('bigCakeWrap');
+  const rect=wrap.getBoundingClientRect();
+  for(let i=0;i<3;i++){
+    const s=document.createElement('div');
+    s.className='smoke-puff';
+    const sz=14+i*8;
+    s.style.cssText=`width:${sz}px;height:${sz}px;left:${rect.left+rect.width/2-sz/2}px;top:${rect.top+rect.height*.18}px;position:fixed;animation-delay:${i*.15}s;z-index:970;`;
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1400);
+  }
+}
+
 
 /* ══ MAIN ANIM ══ */
 function startAnim(){
@@ -911,6 +1266,28 @@ function confetti(){
   }
   setTimeout(()=>document.querySelectorAll('.cf').forEach(c=>c.remove()),6000);
 }
+/* ══ MUSIC TOGGLE ══ */
+function toggleMusic(){
+  const audio=document.getElementById('hbdAudio');
+  const btn=document.getElementById('musicBtn');
+  const icon=document.getElementById('musicIcon');
+  if(audio.paused){
+    audio.play().catch(()=>{});
+    icon.textContent='🎵';
+    btn.classList.add('playing');
+  } else {
+    audio.pause();
+    icon.textContent='🔇';
+    btn.classList.remove('playing');
+  }
+}
 </script>
+<!-- HAPPY BIRTHDAY AUDIO (you fill in the src) -->
+<audio id="hbdAudio" src="original sound - bassam.samir.51_musicaldown.com_1778221538.mp3" preload="auto"></audio>
+
+<!-- MUSIC TOGGLE BUTTON -->
+<button id="musicBtn" onclick="toggleMusic()" title="إيقاف/تشغيل الموسيقى">
+  <span id="musicIcon">🎵</span>
+</button>
 </body>
 </html>
