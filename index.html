@@ -170,8 +170,111 @@ html,body{width:100%;height:100vh;font-size:16px;overflow:hidden;font-family:'Ta
 .cfi-emoji{font-size:72px;margin-bottom:1rem;}
 .cfi-title{font-family:'Great Vibes',cursive;font-size:48px;margin-bottom:.5rem;}
 .cfi-sub{font-size:16px;opacity:.85;letter-spacing:.08em;}
-.card-back{background:linear-gradient(145deg,#fff5f8,#ffe0ec);transform:rotateY(180deg);box-shadow:0 30px 80px rgba(255,61,127,.25);}
-.card-back-msg{font-family:'Dancing Script',cursive;font-size:20px;color:#7a1040;line-height:2.1;text-align:center;direction:rtl;}
+.card-back{
+  background:linear-gradient(160deg,#1e0016 0%,#2a0020 40%,#160010 100%);
+  transform:rotateY(180deg);
+  box-shadow:0 30px 80px rgba(255,61,127,.3);
+  border:1px solid rgba(255,107,157,.18);
+  overflow-y:auto;
+  overflow-x:hidden;
+  justify-content:flex-start;
+  align-items:center;
+  padding:1.6rem 1.4rem;
+}
+.card-back::-webkit-scrollbar{display:none;}
+
+/* ══ MUSIC BUTTON ══ */
+#musicBtn{
+  position:fixed;
+  bottom:22px;
+  left:22px;
+  z-index:9999;
+  width:48px;height:48px;
+  border-radius:50%;
+  background:rgba(255,107,157,.12);
+  border:1.5px solid rgba(255,107,157,.3);
+  color:#ffb3cc;
+  font-size:20px;
+  cursor:pointer;
+  display:none;
+  align-items:center;justify-content:center;
+  backdrop-filter:blur(10px);
+  box-shadow:0 4px 20px rgba(255,61,127,.2);
+  transition:background .25s, transform .2s, box-shadow .2s;
+  animation:musicBtnIn .5s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+#musicBtn:hover{
+  background:rgba(255,107,157,.28);
+  transform:scale(1.12);
+  box-shadow:0 8px 28px rgba(255,61,127,.4);
+}
+#musicBtn.playing span{display:inline-block;animation:spin 3s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes musicBtnIn{
+  from{opacity:0;transform:scale(.5) translateY(10px);}
+  to{opacity:1;transform:scale(1) translateY(0);}
+}
+/* decorative corners */
+.card-back::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 20% 10%,rgba(255,61,127,.15) 0%,transparent 55%),
+    radial-gradient(ellipse at 80% 90%,rgba(255,107,157,.12) 0%,transparent 55%);
+  pointer-events:none;
+}
+/* top shimmer line */
+.card-back::after{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,#ff6b9d,#ffb3cc,#ff6b9d,transparent);
+  opacity:.6;
+}
+.card-back-header{
+  width:100%;
+  display:flex;flex-direction:column;align-items:center;
+  margin-bottom:.7rem;
+  position:relative;z-index:1;
+}
+.card-back-header-emoji{
+  font-size:22px;margin-bottom:.2rem;
+  animation:cakeBob 3s ease-in-out infinite;
+}
+.card-back-header-title{
+  font-family:'Great Vibes',cursive;
+  font-size:22px;
+  background:linear-gradient(135deg,#ffb3cc,#ff3d7f);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:.04em;
+}
+.card-back-divider{
+  width:80%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,107,157,.4),transparent);
+  margin:0 auto .7rem;
+  position:relative;z-index:1;
+}
+.card-back-msg{
+  font-family:'Dancing Script',cursive;
+  font-size:12.5px;
+  color:rgba(255,179,204,.88);
+  line-height:1.85;
+  text-align:center;
+  direction:rtl;
+  position:relative;z-index:1;
+  width:100%;
+}
+.card-back-msg b{
+  color:rgba(255,204,220,.95);
+  font-weight:600;
+}
+/* floating stars decoration */
+.card-back-star{
+  position:absolute;
+  color:rgba(255,179,204,.12);
+  font-size:18px;
+  pointer-events:none;
+  animation:starFloat ease-in-out infinite alternate;
+}
 .card-hint{text-align:center;font-size:13px;color:rgba(255,179,204,.4);margin-top:1rem;letter-spacing:.06em;}
 
 /* ══ SONGS — NEW DESIGN ══ */
@@ -491,37 +594,6 @@ html,body{width:100%;height:100vh;font-size:16px;overflow:hidden;font-family:'Ta
   0%  {color:rgba(255,179,204,0);  transform:translateY(10px);}
   100%{color:rgba(255,179,204,.85);transform:translateY(0);}
 }
-/* ══ MUSIC BUTTON ══ */
-#musicBtn{
-  position:fixed;
-  bottom:22px;
-  left:22px;
-  z-index:9999;
-  width:48px;height:48px;
-  border-radius:50%;
-  background:rgba(255,107,157,.12);
-  border:1.5px solid rgba(255,107,157,.3);
-  color:#ffb3cc;
-  font-size:20px;
-  cursor:pointer;
-  display:none;
-  align-items:center;justify-content:center;
-  backdrop-filter:blur(10px);
-  box-shadow:0 4px 20px rgba(255,61,127,.2);
-  transition:background .25s, transform .2s, box-shadow .2s;
-  animation:musicBtnIn .5s cubic-bezier(.34,1.56,.64,1) forwards;
-}
-#musicBtn:hover{
-  background:rgba(255,107,157,.28);
-  transform:scale(1.12);
-  box-shadow:0 8px 28px rgba(255,61,127,.4);
-}
-#musicBtn.playing span{ display:inline-block; animation:spin 3s linear infinite; }
-@keyframes spin{ to{ transform:rotate(360deg); } }
-@keyframes musicBtnIn{
-  from{opacity:0;transform:scale(.5) translateY(10px);}
-  to{opacity:1;transform:scale(1) translateY(0);}
-}
 </style>
 </head>
 <body>
@@ -769,7 +841,32 @@ html,body{width:100%;height:100vh;font-size:16px;overflow:hidden;font-family:'Ta
           </div>
         </div>
         <div class="card-face card-back">
-          <div class="card-back-msg"></div>
+          <span class="card-back-star" style="top:8%;left:6%;animation-duration:3.2s">✦</span>
+          <span class="card-back-star" style="top:12%;right:8%;animation-duration:4.1s;font-size:12px">✧</span>
+          <span class="card-back-star" style="bottom:10%;left:10%;animation-duration:3.7s;font-size:14px">✦</span>
+          <span class="card-back-star" style="bottom:15%;right:6%;animation-duration:2.9s;font-size:10px">✧</span>
+          <span class="card-back-star" style="top:45%;left:3%;animation-duration:4.5s;font-size:10px">🌸</span>
+          <span class="card-back-star" style="top:55%;right:3%;animation-duration:3.5s;font-size:10px">💜</span>
+          <div class="card-back-header">
+            <div class="card-back-header-emoji">🎂</div>
+            <div class="card-back-header-title">Happy Birthday</div>
+          </div>
+          <div class="card-back-divider"></div>
+          <div class="card-back-msg">
+            <b>بحبك بجد وبعشق فيكي كل حاجة، مش عارف ابدا بايه... 🤍</b><br>
+            <b>ولا ايه يعني — عيونك؟ 👀 شكلك؟ ✨ شخصيتك؟ طيبتك وقلبك؟ 💛</b><br>
+            <b>مش عارف بالضبط، بحب فيكي كل حاجة، حتي عيوبك حبيتها — مع اني والله ما شايف عيوب اصلا. 🌸</b><br>
+            <b>بحب التفاصيل الصغيرة اللي بتقوليهالي في يومك والحاجات العشوائية اللي بتبعتيهالي —</b><br>
+            <b>نفسي تفهمي انها عمرها ما كانت تقيلة على قلبي، دي الحاجة الوحيدة اللي بتطرى على قلبي وبتدفيه. 🔥</b><br>
+            <b>متظنيش ابدا في يوم اني ممكن اتخلي عنك، او تبقي بالنسبالي خيار تاني —</b><br>
+            <b>انتي دايما خياري الاول، علاطول وابدا. 💜</b><br><br>
+            <b>كل سنة وانتي طيبة يا روح الروح 🌹</b><br>
+            <b>وعقبال ميت سنة واحنا سوا 🥂</b><br><br>
+            <b>جسمي اتولد في 8/3/2009 🤍</b><br>
+            <b>وروحي اتولدت في 11/5/2010 💜</b><br>
+            <b>واجتمعوا سوا في 7/4/2026 💫</b><br>
+            <b>اليوم اللي قابلتك فيه.</b>
+          </div>
         </div>
       </div>
     </div>
@@ -1012,7 +1109,6 @@ function startBlackout(){
     if(hbdAudio){
       hbdAudio.volume=0.75;
       hbdAudio.play().catch(()=>{});
-      // show music button
       const mb=document.getElementById('musicBtn');
       mb.style.display='flex';
       mb.classList.add('playing');
@@ -1282,9 +1378,8 @@ function toggleMusic(){
   }
 }
 </script>
-<!-- HAPPY BIRTHDAY AUDIO (you fill in the src) -->
+<!-- HAPPY BIRTHDAY AUDIO -->
 <audio id="hbdAudio" src="original sound - bassam.samir.51_musicaldown.com_1778221538.mp3" preload="auto"></audio>
-
 <!-- MUSIC TOGGLE BUTTON -->
 <button id="musicBtn" onclick="toggleMusic()" title="إيقاف/تشغيل الموسيقى">
   <span id="musicIcon">🎵</span>
